@@ -6,7 +6,7 @@ function verify(req, res, next) {
 
   jwt.verify(token, process.env.JWT_SECRET, null, (err, decoded) => {
     if (err) {
-      res.status(403).json(err);
+      res.status(403).json({error: err});
     } else {
       req.decoded = decoded;
       req.userCookies = _.map(req.decoded.cookies, (cookie) => cookie.name + '=' + cookie.value).join('; ');
