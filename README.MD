@@ -1,6 +1,9 @@
 <h1 align="center">Welcome to ent-parisdescartes-api 👋</h1>
 <p>
   <img alt="Version" src="https://img.shields.io/badge/version-1.0.0-blue.svg?cacheSeconds=2592000" />
+  <a href="https://stoplight.io/p/docs/gh/iambluedev1/ent-parisdescartes-api" target="_blank">
+    <img alt="Documentation" src="https://img.shields.io/badge/documentation-yes-brightgreen.svg" />
+  </a>
   <a href="#" target="_blank">
     <img alt="License: ISC" src="https://img.shields.io/badge/License-ISC-yellow.svg" />
   </a>
@@ -24,7 +27,7 @@ npm run start
 
 👤 **Guillaume Chalons**
 
-* Website: [guillaumechalons.fr](https://guillaumechalons.fr)
+* Website: https://guillaumechalons.fr
 * Github: [@iambluedev1](https://github.com/iambluedev1)
 * LinkedIn: [@guillaume-chalons](https://linkedin.com/in/guillaume-chalons)
 
