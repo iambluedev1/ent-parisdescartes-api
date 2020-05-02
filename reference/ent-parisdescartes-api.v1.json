@@ -1,0 +1,772 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "ent-parisdescartes-api",
+    "version": "1.0",
+    "license": {
+      "name": "ISC"
+    },
+    "contact": {
+      "name": "Guillaume Chalons",
+      "url": "https://guillaumechalons.fr",
+      "email": "contact@guillaumechalons.fr"
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "dev"
+    },
+    {
+      "description": "demo",
+      "url": "https://ent-parisdescartes-api.herokuapp.com/"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "",
+        "operationId": "post-login",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "return": {
+                      "type": "object",
+                      "required": [
+                        "result",
+                        "token"
+                      ],
+                      "properties": {
+                        "result": {
+                          "type": "string"
+                        },
+                        "token": {
+                          "type": "string",
+                          "description": "jwt token used to identify user"
+                        }
+                      }
+                    },
+                    "api": {
+                      "$ref": "#/components/schemas/ApiBlockResponse"
+                    }
+                  },
+                  "required": [
+                    "return",
+                    "api"
+                  ]
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "return": {
+                        "result": "success",
+                        "token": "a jwt token"
+                      },
+                      "api": {
+                        "request": {
+                          "path": "/login",
+                          "body": {
+                            "username": "my username",
+                            "password": "my password"
+                          }
+                        },
+                        "response": {
+                          "code": 200
+                        },
+                        "name": "ent-parisdescartes-api",
+                        "version": "1.0.0",
+                        "github": "https://github.com/iambluedev1/ent-parisdescartes-api"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Unprocessable Entity",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "return": {
+                      "type": "object",
+                      "required": [
+                        "error"
+                      ],
+                      "properties": {
+                        "error": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "api": {
+                      "$ref": "#/components/schemas/ApiBlockResponse"
+                    }
+                  },
+                  "required": [
+                    "return",
+                    "api"
+                  ]
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "return": {
+                        "error": "Les informations transmises n'ont pas permis de vous authentifier."
+                      },
+                      "api": {
+                        "request": {
+                          "path": "/login",
+                          "body": {
+                            "username": "my username",
+                            "password": "my password"
+                          }
+                        },
+                        "response": {
+                          "code": 422
+                        },
+                        "name": "ent-parisdescartes-api",
+                        "version": "1.0.0",
+                        "github": "https://github.com/iambluedev1/ent-parisdescartes-api"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "description": "",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "username": {
+                    "type": "string"
+                  },
+                  "password": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "username",
+                  "password"
+                ]
+              },
+              "examples": {}
+            }
+          },
+          "description": ""
+        },
+        "security": [],
+        "tags": [
+          "auth"
+        ]
+      },
+      "parameters": []
+    },
+    "/me": {
+      "get": {
+        "summary": "Retrieve user's personal data",
+        "tags": [
+          "user"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "return": {
+                      "type": "object",
+                      "required": [
+                        "user",
+                        "mails",
+                        "establishment"
+                      ],
+                      "properties": {
+                        "user": {
+                          "type": "object",
+                          "required": [
+                            "uid",
+                            "firstName",
+                            "lastName",
+                            "birthDay",
+                            "gender"
+                          ],
+                          "properties": {
+                            "uid": {
+                              "type": "string"
+                            },
+                            "firstName": {
+                              "type": "string"
+                            },
+                            "lastName": {
+                              "type": "string"
+                            },
+                            "birthDay": {
+                              "type": "string"
+                            },
+                            "gender": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "mails": {
+                          "type": "object",
+                          "required": [
+                            "addresses",
+                            "host"
+                          ],
+                          "properties": {
+                            "addresses": {
+                              "type": "object",
+                              "required": [
+                                "main",
+                                "alternate",
+                                "personal"
+                              ],
+                              "properties": {
+                                "main": {
+                                  "type": "string"
+                                },
+                                "alternate": {
+                                  "type": "string"
+                                },
+                                "personal": {
+                                  "type": "string"
+                                }
+                              }
+                            },
+                            "host": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "establishment": {
+                          "type": "object",
+                          "required": [
+                            "name",
+                            "job"
+                          ],
+                          "properties": {
+                            "name": {
+                              "type": "string"
+                            },
+                            "job": {
+                              "type": "array",
+                              "items": {}
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "api": {
+                      "$ref": "#/components/schemas/ApiBlockResponse"
+                    }
+                  },
+                  "required": [
+                    "return",
+                    "api"
+                  ]
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "return": {
+                        "user": {
+                          "uid": "aa00000",
+                          "firstName": "john",
+                          "lastName": "doe",
+                          "birthDay": "01-01-1970",
+                          "gender": "man"
+                        },
+                        "mails": {
+                          "addresses": {
+                            "main": "john.doe@etu.parisdescartes.fr",
+                            "alternate": "aa00000@etu.parisdescartes.fr",
+                            "personal": "johndoe@gmail.com"
+                          },
+                          "host": "o365.parisdescartes.fr"
+                        },
+                        "establishment": {
+                          "name": "Institut Universitaire De Technologie",
+                          "job": [
+                            "student"
+                          ]
+                        }
+                      },
+                      "api": {
+                        "request": {
+                          "path": "/me",
+                          "body": {}
+                        },
+                        "response": {
+                          "code": 200
+                        },
+                        "name": "ent-parisdescartes-api",
+                        "version": "1.0.0",
+                        "github": "https://github.com/iambluedev1/ent-parisdescartes-api"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenResponse"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-me",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": ""
+      }
+    },
+    "/my-emails": {
+      "get": {
+        "summary": "Retrieve user's emails",
+        "tags": [
+          "user"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "return": {
+                      "type": "object",
+                      "required": [
+                        "emails"
+                      ],
+                      "properties": {
+                        "emails": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "bcc": {
+                                "oneOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {
+                                        "type": "string"
+                                      },
+                                      "address": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "name",
+                                      "address"
+                                    ]
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "cc": {
+                                "oneOf": [
+                                  {
+                                    "type": "object",
+                                    "properties": {
+                                      "name": {
+                                        "type": "string"
+                                      },
+                                      "address": {
+                                        "type": "string"
+                                      }
+                                    },
+                                    "required": [
+                                      "name",
+                                      "address"
+                                    ]
+                                  },
+                                  {
+                                    "type": "null"
+                                  }
+                                ]
+                              },
+                              "from": {
+                                "type": "object",
+                                "properties": {
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "address": {
+                                    "type": "string"
+                                  }
+                                }
+                              },
+                              "subject": {
+                                "type": "string"
+                              },
+                              "read": {
+                                "type": "boolean"
+                              },
+                              "priority": {
+                                "type": "string"
+                              },
+                              "at": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "bcc",
+                              "cc",
+                              "from",
+                              "subject",
+                              "read",
+                              "priority",
+                              "at"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "api": {
+                      "$ref": "#/components/schemas/ApiBlockResponse"
+                    }
+                  },
+                  "required": [
+                    "return",
+                    "api"
+                  ]
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "return": {
+                        "emails": [
+                          {
+                            "bcc": null,
+                            "cc": null,
+                            "from": {
+                              "name": "Communication",
+                              "address": "communication@u-paris.fr"
+                            },
+                            "subject": "[INFORMATION] L'actualité étudiante - spéciale Covid-19",
+                            "read": false,
+                            "priority": "Normal",
+                            "at": "2020-04-30T17:57:12+02:00"
+                          }
+                        ]
+                      },
+                      "api": {
+                        "request": {
+                          "path": "/my-emails",
+                          "body": {}
+                        },
+                        "response": {
+                          "code": 200
+                        },
+                        "name": "ent-parisdescartes-api",
+                        "version": "1.0.0",
+                        "github": "https://github.com/iambluedev1/ent-parisdescartes-api"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenResponse"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-my-emails",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ]
+      }
+    },
+    "/my-courses": {
+      "get": {
+        "summary": "Retrieve user's courses",
+        "tags": [
+          "user"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "return": {
+                      "type": "object",
+                      "required": [
+                        "courses"
+                      ],
+                      "properties": {
+                        "courses": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "id": {
+                                "type": "integer"
+                              },
+                              "name": {
+                                "type": "string"
+                              }
+                            },
+                            "required": [
+                              "id",
+                              "name"
+                            ]
+                          }
+                        }
+                      }
+                    },
+                    "api": {
+                      "$ref": "#/components/schemas/ApiBlockResponse"
+                    }
+                  },
+                  "required": [
+                    "return",
+                    "api"
+                  ]
+                },
+                "examples": {
+                  "example": {
+                    "value": {
+                      "return": {
+                        "courses": [
+                          {
+                            "id": 8976,
+                            "name": "Créathon"
+                          }
+                        ]
+                      },
+                      "api": {
+                        "request": {
+                          "path": "/my-courses",
+                          "body": {}
+                        },
+                        "response": {
+                          "code": 200
+                        },
+                        "name": "ent-parisdescartes-api",
+                        "version": "1.0.0",
+                        "github": "https://github.com/iambluedev1/ent-parisdescartes-api"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenResponse"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-my-courses",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "description": ""
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    },
+    "schemas": {
+      "ApiBlockResponse": {
+        "title": "Response Part",
+        "type": "object",
+        "description": "",
+        "x-examples": {
+          "example": {
+            "request": {
+              "path": "/login",
+              "body": {
+                "username": "my username",
+                "password": "my password"
+              }
+            },
+            "response": {
+              "code": 422
+            },
+            "name": "ent-parisdescartes-api",
+            "version": "1.0.0",
+            "github": "https://github.com/iambluedev1/ent-parisdescartes-api"
+          }
+        },
+        "properties": {
+          "request": {
+            "type": "object",
+            "required": [
+              "path",
+              "body"
+            ],
+            "properties": {
+              "path": {
+                "type": "string"
+              },
+              "body": {
+                "type": "object"
+              }
+            }
+          },
+          "response": {
+            "type": "object",
+            "required": [
+              "code"
+            ],
+            "properties": {
+              "code": {
+                "type": "integer"
+              }
+            }
+          },
+          "name": {
+            "type": "string"
+          },
+          "version": {
+            "type": "string"
+          },
+          "github": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "request",
+          "response",
+          "name",
+          "version",
+          "github"
+        ],
+        "x-tags": [
+          "Part"
+        ]
+      },
+      "ForbiddenResponse": {
+        "type": "object",
+        "title": "Forbidden Response",
+        "x-examples": {
+          "invalid jwt token": {
+            "return": {
+              "name": "JsonWebTokenError",
+              "message": "invalid token"
+            },
+            "api": {
+              "request": {
+                "path": "/me",
+                "body": {}
+              },
+              "response": {
+                "code": 403
+              },
+              "name": "ent-parisdescartes-api",
+              "version": "1.0.0",
+              "github": "https://github.com/iambluedev1/ent-parisdescartes-api"
+            }
+          },
+          "invalid jwt signature": {
+            "return": {
+              "name": "JsonWebTokenError",
+              "message": "invalid signature"
+            },
+            "api": {
+              "request": {
+                "path": "/me",
+                "body": {}
+              },
+              "response": {
+                "code": 403
+              },
+              "name": "ent-parisdescartes-api",
+              "version": "1.0.0",
+              "github": "https://github.com/iambluedev1/ent-parisdescartes-api"
+            }
+          }
+        },
+        "properties": {
+          "return": {
+            "type": "object",
+            "required": [
+              "name",
+              "message"
+            ],
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            }
+          },
+          "api": {
+            "$ref": "#/components/schemas/ApiBlockResponse"
+          }
+        },
+        "required": [
+          "return",
+          "api"
+        ],
+        "x-tags": [
+          "Response"
+        ]
+      }
+    }
+  },
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ]
+}
