@@ -5,7 +5,7 @@ const logger = require('./logger');
 const morgan = require('morgan');
 const dotenv = require('dotenv');
 const pjson = require('../package.json');
-const fs = require("fs");
+const fs = require('fs');
 dotenv.config();
 
 const app = express();
@@ -60,9 +60,9 @@ app.use((req, res, next) => {
   next();
 });
 
-fs.readdirSync("./src/api/").forEach((file) => {
-  require("./api/" + file)(app);
-  logger.info("Loaded " + file);
+fs.readdirSync('./src/api/').forEach((file) => {
+  require('./api/' + file)(app);
+  logger.info('Loaded ' + file);
 });
 
 app.get('*', (req, res) => {

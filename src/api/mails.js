@@ -1,20 +1,11 @@
 const {verify} = require('../jwt');
-const fetch = require('node-fetch');
+const {fetch, error} = require('../util/fetch');
 const _ = require('lodash');
 
 module.exports = (router) => {
   router.get('/my-emails', verify, async (req, res) => {
-    fetch('https://ent.parisdescartes.fr/api/owa-rest/mail-owa', {
-      headers: {
-        cookie: req.userCookies
-      }
-    })
-      .then(response => response.json())
+    fetch('https://ent.parisdescartes.fr/api/owa-rest/mail-owa', req, res)
       .then(json => {
-        if (json.success === false) {
-          return res.status(403).json({error: json.flashMessages.error});
-        }
-
         res.json({
           emails: _.map(json.data.ResponseMessages.FindItemResponseMessage[0].RootFolder.Items.Message, (email) => {
             return {
@@ -37,6 +28,7 @@ module.exports = (router) => {
             };
           })
         });
-      });
+      })
+      .catch(e => error(e, req, res));
   });
 };

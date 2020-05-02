@@ -1,19 +1,10 @@
 const {verify} = require('../jwt');
-const fetch = require('node-fetch');
+const {fetch, error} = require('../util/fetch');
 
 module.exports = (router) => {
   router.get('/me', verify, async (req, res) => {
-    fetch('https://ent.parisdescartes.fr/api/info-rest', {
-      headers: {
-        cookie: req.userCookies
-      }
-    })
-      .then(response => response.json())
+    fetch('https://ent.parisdescartes.fr/api/info-rest', req, res)
       .then(json => {
-        if (json.success === false) {
-          return res.status(403).json({error: json.flashMessages.error});
-        }
-
         res.json({
           user: {
             uid: json.infoUser.uid[0],
@@ -35,6 +26,7 @@ module.exports = (router) => {
             job: json.infoUser.edupersonprimaryaffiliation
           }
         });
-      });
+      })
+      .catch(e => error(e, req, res));
   });
 };

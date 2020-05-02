@@ -2,7 +2,7 @@ const {createLogger, format, transports} = require('winston');
 
 const logger = createLogger({
   exitOnError: false,
-  level: 'info',
+  level: process.env.LOGGER_LEVEL || 'debug',
   transports: [
     new (transports.Console)({
       handleExceptions: true,
